@@ -1,7 +1,7 @@
 <?php
 require_once '../../../config/database.php';
 require_once '../../dao/sacoleDAO.php';
-require_once '../../dao/TipoSacoleDAO.php';
+require_once '../../dao/tipoSacoleDAO.php';
 
 class crudProdutos {
     public static function inserir($sacole) {

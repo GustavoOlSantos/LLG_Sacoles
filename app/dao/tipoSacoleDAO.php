@@ -19,10 +19,18 @@ class TipoSacoleDAO {
     }
 
     public function configurarPreco($precoNormal, $precoGourmet) {
-        $exec = $this->conn->prepare("UPDATE tiposacole SET preco = ? WHERE id = '1'");
-        $exec->execute([$precoNormal]);
+    
+        try {
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $exec = $this->conn->prepare("UPDATE tiposacole SET preco = ? WHERE id = '2'");
-        $exec->execute([$precoGourmet]);
+            $exec = $this->conn->prepare("UPDATE tiposacole SET preco = ? WHERE id = 1");
+            $exec->execute([$precoNormal]);
+
+            $exec = $this->conn->prepare("UPDATE tiposacole SET preco = ? WHERE id = 2");
+            $exec->execute([$precoGourmet]);
+
+        } catch (PDOException $e) {
+            die("Erro ao atualizar preços: " . $e->getMessage());
+        }
     }
 }

@@ -1,0 +1,37 @@
+services:
+  app:
+    container_name: sacole_app
+    build: ./
+    environment:
+      - DB_HOST=mysql:3306
+      - DB_NAME=sistem-sacole
+      - DB_USER=app
+      - DB_PASS=123456
+    ports:
+     - "3333:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql: 
+    container_name: sacole_db
+    image: mysql:8.4
+    command: --lower_case_table_names=1 --sql-mode="NO_ENGINE_SUBSTITUTION"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sistem-sacole
+      MYSQL_USER: app
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:
