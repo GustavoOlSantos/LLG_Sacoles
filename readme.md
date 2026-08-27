@@ -19,8 +19,8 @@ Este projeto é um sistema de gerenciamento de vendas e estoque de sacolés. Ele
 - Configurar preços para os tipos de sacolés (normal e gourmet).
 
 ### 💲 Vendas de Sacolés
-- Registrar as vendas do sacolés. *(em desenvolvimento)*
-- Calculo automático do estoque. *(em desenvolvimento)*
+- Registrar as vendas do sacolés.
+- Calculo automático do estoque.
 
 ### 📊 Relatórios
 - Relatórios gerais *(em desenvolvimento)*.
@@ -70,8 +70,7 @@ Este projeto é um sistema de gerenciamento de vendas e estoque de sacolés. Ele
 
 1. **Clone o repositório para o seu ambiente local:**
    ```bash
-   git clone <url-do-repositorio>
-
+   git clone https://github.com/GustavoOlSantos/vendasSacole.git
 2. Configure o servidor local (ex.: XAMPP) e coloque o projeto na pasta htdocs.
 
 3. Crie o banco de dados no MySQL com o nome sistem-sacole e configure as credenciais no arquivo config/database.php.
@@ -87,12 +86,23 @@ Este projeto é um sistema de gerenciamento de vendas e estoque de sacolés. Ele
 ### 📋 Tabelas Principais
 
 #### `sacoles`
-- `id`: Identificador único.
+- `id`: Código do Sacolé.
 - `sabor`: Nome do sabor.
-- `tipo`: Tipo do sacolé (normal ou gourmet).
+- `tipo`: Id do tipo do sacolé.
 - `quantidade`: Quantidade disponível no estoque.
 
 #### `tiposacole`
-- `id`: Identificador único.
-- `tipo`: Nome do tipo (normal ou gourmet).
-- `preco`: Preço do tipo.
+- `id`: Código do tipo de sacolé.
+- `tipo`: Nome (Tradicional ou gourmet).
+- `preco`: Preço para o tipo de sacolé.
+
+#### `vendas`
+- `id`: Código da Venda.
+- `data_venda`: Data da venda.
+- `total`: Valor total da venda.
+
+#### `vendas_sacole`
+- `id_venda`: Código da Venda.
+- `id_sacole`: Código do Sacolé.
+- `qtd`: Quantidade de sacolés vendidos.
+
