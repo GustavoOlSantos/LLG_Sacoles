@@ -99,7 +99,7 @@ O projeto já conta com Docker configurado, subindo automaticamente um container
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/GustavoOlSantos/vendasSacole.git
+   git clone https://github.com/GustavoOlSantos/LLG_sacoles.git
    cd vendasSacole
    ```
 
