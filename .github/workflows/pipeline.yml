@@ -1,0 +1,47 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  phpstan-analysis:
+    name: Análise Estática (PHPStan)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup do PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Instalar dependências (Composer)
+        run: composer install --prefer-dist --no-progress
+
+      - name: Rodar PHPStan
+        run: vendor/bin/phpstan analyse app --level=1 
+
+  docker-build-test:
+    name: Teste de Build do Docker
+    needs: phpstan-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Testar Build da Imagem Docker
+        run: docker build -t meu-portfolio-php .
+
+      - name: Rodar o container no background
+        run: docker run -d -p 3333:80 meu-portfolio-php
+    
+      - name: Rodar testes do Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: 'http://localhost:3333'
+          config: baseUrl=http://localhost:3333
