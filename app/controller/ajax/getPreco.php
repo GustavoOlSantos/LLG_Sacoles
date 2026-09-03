@@ -1,13 +1,13 @@
 <?php
 require_once '../../../config/database.php';
-require_once '../../dao/tiposacoleDAO.php';
+require_once '../../dao/tipoSacoleDAO.php';
 
 header('Content-Type: application/json');
 
 if (isset($_GET['tipo'])) {
     $tipoId = $_GET['tipo'];
 
-    $dao = new TiposacoleDAO();
+    $dao = new tipoSacoleDAO();
     $preco = $dao->buscarPrecoPorId($tipoId);
 
     if ($preco !== null) {

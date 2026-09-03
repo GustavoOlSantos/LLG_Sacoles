@@ -3,8 +3,8 @@ class Database {
     private static $envLoaded = false;
 
     public static function getConnection() {
-        // Se NÃO estiver no Docker, carrega o arquivo .env (para compatibilidade com XAMPP)
-        if (!getenv('DB_HOST') && !self::$envLoaded) {
+
+        if (empty($_SERVER['DB_HOST']) && !getenv('DB_HOST') && !self::$envLoaded) {
             $path = dirname(__DIR__) . '/.env';
             if (file_exists($path)) {
                 self::loadEnv($path);
@@ -12,31 +12,41 @@ class Database {
             self::$envLoaded = true;
         }
 
-        // Pega as variáveis (que agora vêm ou do Docker ou do .env)
-        // Se getenv('DB_HOST') vier vazio, ele usa o 'mysql' que é o nome do container no seu compose
-        $host    = getenv('DB_HOST') ?: 'mysql';
-        $dbname  = getenv('DB_NAME');
-        $user    = getenv('DB_USER');
-        $pass    = getenv('DB_PASS');
+        $hostRaw = $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ?: 'mysql';
+        $dbname  = $_SERVER['DB_NAME'] ?? getenv('DB_NAME');
+        $user    = $_SERVER['DB_USER'] ?? getenv('DB_USER');
+        $pass    = $_SERVER['DB_PASS'] ?? getenv('DB_PASS');
+
+        $host = $hostRaw;
+        $port = '3306';
+        if (strpos($hostRaw, ':') !== false) {
+            list($host, $port) = explode(':', $hostRaw);
+        }
 
         try {
-            // Força o uso de IP se o host ainda for localhost, para evitar o erro de socket
             if ($host === 'localhost' || $host === '127.0.0.1') {
                 $host = '127.0.0.1';
             }
 
-            return new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
+            $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
+            
+            $options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ];
+
+            return new PDO($dsn, $user, $pass, $options);
+            
         } catch (PDOException $e) {
-            die("Erro na conexão: " . $e->getMessage());
+            http_response_code(500);
+            error_log("Erro de DB: " . $e->getMessage());
+            die("Erro na conexão com o banco de dados.");
         }
     }
 
     public static function loadEnv($path) {
         $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
-            if (strpos(trim($line), '#') === 0 || strpos($line, '=') === false) {
-                continue;
-            }
+            if (strpos(trim($line), '#') === 0 || strpos($line, '=') === false) continue;
             list($name, $value) = explode('=', $line, 2);
             $name = trim($name);
             $value = trim($value, " \t\n\r\0\x0B\"'");

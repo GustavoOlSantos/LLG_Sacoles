@@ -1,7 +1,7 @@
 <?php
 require_once '../../../config/database.php';
 require_once '../../dao/sacoleDAO.php';
-require_once '../../dao/tiposacoleDAO.php';
+require_once '../../dao/tipoSacoleDAO.php';
 
 class crudProdutos {
     public static function inserir($sacole) {
@@ -30,7 +30,7 @@ class crudProdutos {
     }
 
     public static function configurarPreco($precoNormal, $precoGourmet) {
-        $dao = new TiposacoleDAO();
+        $dao = new tipoSacoleDAO();
         $dao->configurarPreco($precoNormal, $precoGourmet);
         
         header("Location: ../produtos/listarProdutos.php");

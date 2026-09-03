@@ -1,5 +1,5 @@
 <?php
-class TiposacoleDAO {
+class tipoSacoleDAO {
     private $conn;
 
     public function __construct() {
