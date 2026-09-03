@@ -4,7 +4,7 @@ class Venda {
 
     public function __construct($id = null, $sacolesVendidos = null, $data = null, $total = null) {
         $this->id = $id;
-        $this->sacolesVendidos = [];
+        $this->sacolesVendidos = $sacolesVendidos ?? []; 
         $this->data = $data;
         $this->total = $total;
     }
@@ -20,6 +20,6 @@ class Venda {
     public function setTotal($total) { $this->total = $total; }
 
     public function appendSacole($sacole) { 
-        $this->sacolesVendidos[] = $sacolesVendidos; 
+        $this->sacolesVendidos[] = $sacole; 
     }
 }
