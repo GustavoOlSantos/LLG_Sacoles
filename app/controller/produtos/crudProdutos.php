@@ -1,12 +1,12 @@
 <?php
 require_once '../../../config/database.php';
 require_once '../../dao/sacoleDAO.php';
-require_once '../../dao/tipoSacoleDAO.php';
+require_once '../../dao/tiposacoleDAO.php';
 
 class crudProdutos {
     public static function inserir($sacole) {
         if($sacole->isValidoCadastro()) {
-            $dao = new SacoleDAO();
+            $dao = new sacoleDAO();
             $dao->inserir($sacole);
         }
 
@@ -30,7 +30,7 @@ class crudProdutos {
     }
 
     public static function configurarPreco($precoNormal, $precoGourmet) {
-        $dao = new TipoSacoleDAO();
+        $dao = new TiposacoleDAO();
         $dao->configurarPreco($precoNormal, $precoGourmet);
         
         header("Location: ../produtos/listarProdutos.php");

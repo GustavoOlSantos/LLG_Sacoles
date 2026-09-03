@@ -1,0 +1,14 @@
+parameters:
+    level: 1
+    paths:
+        - . 
+
+    excludePaths:
+        - public/
+        - app/views/
+        
+    scanDirectories:
+        - . 
+        
+    bootstrapFiles:
+        - config/url.php

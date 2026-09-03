@@ -1,13 +1,13 @@
 <?php
 require_once '../../../config/database.php';
-require_once '../../dao/tipoSacoleDAO.php';
+require_once '../../dao/tiposacoleDAO.php';
 
 header('Content-Type: application/json');
 
 if (isset($_GET['tipo'])) {
     $tipoId = $_GET['tipo'];
 
-    $dao = new TipoSacoleDAO();
+    $dao = new TiposacoleDAO();
     $preco = $dao->buscarPrecoPorId($tipoId);
 
     if ($preco !== null) {
@@ -18,5 +18,4 @@ if (isset($_GET['tipo'])) {
 } else {
     echo json_encode(['success' => false, 'message' => 'Parâmetro inválido.']);
 }
-?>
 

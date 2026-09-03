@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         case 'apagar':
             if(isset($_POST['id'])) {
-                $dao = new SacoleDAO();
+                $dao = new sacoleDAO();
                 crudProdutos::apagar($_POST['id']);
             } else {
                 echo "ID não fornecido.";
@@ -65,4 +65,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             break;
     }
 }
-?>

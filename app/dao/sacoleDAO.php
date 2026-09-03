@@ -1,6 +1,6 @@
 <?php
 require_once '../../model/sacole.php';
-class SacoleDAO {
+class sacoleDAO {
     private $conn;
 
     public function __construct() {
