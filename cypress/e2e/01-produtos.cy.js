@@ -22,10 +22,13 @@ describe("Tela de Produtos", () => {
   describe("Popup: Adicionar Novo Sabor (#modalAdd)", () => {
     it("abre e fecha o modal ao clicar em 'Cancelar'", () => {
       cy.get("a.addSacole").click();
+      cy.wait(500);
       cy.get("#modalAdd").should("be.visible");
       cy.contains("#modalAdd .modal-title", "Adicionar Sacolé");
+      cy.wait(500);
 
       cy.get("#modalAdd").contains("button", "Cancelar").click();
+      cy.wait(500);
       cy.get("#modalAdd").should("not.be.visible");
     });
 
