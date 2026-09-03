@@ -27,21 +27,19 @@ jobs:
         run: vendor/bin/phpstan analyse app --level=1 
 
   docker-build-test:
-    name: Teste de Build do Docker
+    name: Teste de Build e Cypress
     needs: phpstan-analysis
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Testar Build da Imagem Docker
-        run: docker build -t meu-portfolio-php .
+      - name: Subir ambiente com Docker Compose
+        run: docker compose up -d --build
 
-      - name: Rodar o container no background
-        run: docker run -d -p 3333:80 meu-portfolio-php
-    
       - name: Rodar testes do Cypress
         uses: cypress-io/github-action@v6
         with:
-          wait-on: 'http://localhost:3333'
-          config: baseUrl=http://localhost:3333
+          # A porta 3333 bate com o seu docker-compose.yml
+          wait-on: 'http://localhost:3333/sacoleVendas'
+          config: baseUrl=http://localhost:3333/sacoleVendas
